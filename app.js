@@ -66,9 +66,9 @@ function renderTodos() {
   if (todos.length === 0) {
     emptyMessage.textContent = "還沒有任何待辦事項,新增一個吧!";
   } else if (currentFilter === "active") {
-    emptyMessage.textContent = "目前沒有未完成的待辦事項。";
+    emptyMessage.textContent = "目前沒有未完成的待辦事項，符合條件的項目會顯示在這裡。";
   } else if (currentFilter === "completed") {
-    emptyMessage.textContent = "目前沒有已完成的待辦事項。";
+    emptyMessage.textContent = "目前沒有已完成的待辦事項，符合條件的項目會顯示在這裡。";
   }
   emptyMessage.hidden = getFilteredTodos().length > 0;
 }
