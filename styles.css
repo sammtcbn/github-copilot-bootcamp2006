@@ -1,13 +1,54 @@
 :root {
   --page-background: #f3f0e9;
   --card-background: #fffdf8;
+  --input-background: #faf8f2;
+  --card-border: rgba(255, 255, 255, 0.75);
   --text-primary: #24332e;
   --text-secondary: #728078;
   --accent: #d66b4d;
   --accent-dark: #b95339;
+  --button-text: #fffdf8;
   --line: #e8e3d9;
   --completed: #aeb9b1;
+  --focus-ring: rgba(214, 107, 77, 0.14);
+  --page-glow-one: rgba(255, 255, 255, 0.8);
+  --page-glow-two: rgba(216, 228, 211, 0.7);
   --shadow: 0 24px 60px rgba(58, 66, 59, 0.12);
+}
+
+:root[data-theme="dark"] {
+  --page-background: #1c2523;
+  --card-background: #26322f;
+  --input-background: #202b29;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f1eee5;
+  --text-secondary: #aab8b0;
+  --accent: #ed8968;
+  --accent-dark: #f09a7d;
+  --button-text: #202b29;
+  --line: #3d4b46;
+  --completed: #7e9088;
+  --focus-ring: rgba(237, 137, 104, 0.2);
+  --page-glow-one: rgba(64, 83, 76, 0.45);
+  --page-glow-two: rgba(48, 71, 63, 0.5);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --page-background: #1c2523;
+    --card-background: #26322f;
+    --input-background: #202b29;
+    --card-border: rgba(255, 255, 255, 0.08);
+    --text-primary: #f1eee5;
+    --text-secondary: #aab8b0;
+    --button-text: #202b29;
+    --line: #3d4b46;
+    --completed: #7e9088;
+    --page-glow-one: rgba(64, 83, 76, 0.45);
+    --page-glow-two: rgba(48, 71, 63, 0.5);
+    --shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  }
 }
 
 * {
@@ -21,7 +62,7 @@ body {
   color: var(--text-primary);
   font-family: "Trebuchet MS", "Microsoft JhengHei", sans-serif;
   background: var(--page-background);
-  background-image: radial-gradient(circle at 12% 15%, rgba(255, 255, 255, 0.8) 0 7%, transparent 28%), radial-gradient(circle at 90% 85%, rgba(216, 228, 211, 0.7) 0 5%, transparent 25%);
+  background-image: radial-gradient(circle at 12% 15%, var(--page-glow-one) 0 7%, transparent 28%), radial-gradient(circle at 90% 85%, var(--page-glow-two) 0 5%, transparent 25%);
 }
 
 .todo-card {
@@ -29,7 +70,7 @@ body {
   min-height: 560px;
   margin: 0 auto;
   padding: clamp(28px, 6vw, 46px);
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--card-border);
   border-radius: 22px;
   background: var(--card-background);
   box-shadow: var(--shadow);
@@ -37,6 +78,13 @@ body {
 
 .todo-header {
   margin-bottom: 30px;
+}
+
+.header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .eyebrow,
@@ -62,6 +110,25 @@ h1 {
   font-size: 0.95rem;
 }
 
+.theme-toggle {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text-primary);
+  background: var(--input-background);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.theme-toggle:hover,
+.filter-button:hover {
+  border-color: var(--accent);
+}
+
 .todo-form {
   display: flex;
   gap: 10px;
@@ -75,7 +142,7 @@ h1 {
   border: 1px solid var(--line);
   border-radius: 10px;
   color: var(--text-primary);
-  background: #faf8f2;
+  background: var(--input-background);
   font: inherit;
   outline: none;
   transition: border-color 160ms ease, box-shadow 160ms ease;
@@ -83,7 +150,7 @@ h1 {
 
 .todo-form input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(214, 107, 77, 0.14);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .todo-form button,
@@ -96,7 +163,7 @@ h1 {
 .todo-form button {
   padding: 0 18px;
   border-radius: 10px;
-  color: #fffdf8;
+  color: var(--button-text);
   background: var(--accent);
   font-weight: 700;
   transition: background 160ms ease, transform 160ms ease;
@@ -105,6 +172,30 @@ h1 {
 .todo-form button:hover {
   background: var(--accent-dark);
   transform: translateY(-1px);
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.filter-button {
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.filter-button.is-active {
+  border-color: var(--accent);
+  color: var(--button-text);
+  background: var(--accent);
 }
 
 .todo-list {
@@ -208,6 +299,15 @@ h1 {
     min-height: calc(100vh - 32px);
     border-radius: 16px;
     padding: 28px 20px;
+  }
+
+  .header-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .theme-toggle {
+    align-self: flex-start;
   }
 
   .todo-form button {
